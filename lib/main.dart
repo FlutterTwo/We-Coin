@@ -4,6 +4,10 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:we_coin/splash_screen.dart';
 import 'package:we_coin/view/dashboard/drawer.dart';
 import 'package:we_coin/view/dashboard/navbar.dart';
+import 'package:we_coin/view/dashboard/navigation_pages/dispute/dispute.dart';
+import 'package:we_coin/view/dashboard/navigation_pages/notification/notification.dart';
+import 'package:we_coin/view/dashboard/navigation_pages/profile/profile_page.dart';
+import 'package:we_coin/view/dashboard/navigation_pages/send_money/send_money.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,11 +32,15 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
             textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
           ),
-          home: child,
+          home: MyNavigationBar(),
+          routes: {
+            pageRoutes.home: (context) => ProfilePageScreen(),
+          },
         );
       },
       // child: MainPageAppSelection(),
-      child: SplashScreen(),
+      // child: SplashScreen(),
+      // child: Dashboard(),
       // child: Dashboard(),
     );
   }

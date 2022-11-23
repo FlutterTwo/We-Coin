@@ -6,9 +6,11 @@ import 'package:we_coin/common_widget/my_custom_button.dart';
 
 import '../../../../utils/color_manager.dart';
 import '../../../../utils/image_manager.dart';
+import '../../drawer.dart';
 import '../profile/profile_page.dart';
 
 class SendMoneyPageScreen extends StatelessWidget {
+  static const String routeName = '/profilePage';
   const SendMoneyPageScreen({Key? key}) : super(key: key);
 
   @override

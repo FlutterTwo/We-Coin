@@ -5,14 +5,22 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:we_coin/utils/color_manager.dart';
 
 import '../../../../utils/image_manager.dart';
+import '../../drawer.dart';
+import '../../navbar.dart';
 import 'edit_profile.dart';
 
-class ProfilePageScreen extends StatelessWidget {
-  const ProfilePageScreen({Key? key}) : super(key: key);
+class ProfilePageScreen extends StatefulWidget {
+  static const String routeName = '/homePage';
 
+  @override
+  State<ProfilePageScreen> createState() => _ProfilePageScreenState();
+}
+
+class _ProfilePageScreenState extends State<ProfilePageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: navigationDrawer(),
       body: Column(
         children: [
           Expanded(
@@ -37,10 +45,11 @@ class ProfilePageScreen extends StatelessWidget {
                                       children: [
                                         IconButton(
                                           icon: Icon(
-                                            Icons.arrow_back_ios_new_rounded,
+                                            Icons.arrow_back_ios,
                                             color: ColorsManager.WHITE_COLOR,
                                           ),
-                                          onPressed: () => Get.back(),
+                                          onPressed: () =>
+                                              Scaffold.of(context).openDrawer(),
                                         ),
                                         Text(
                                           'My Profile',

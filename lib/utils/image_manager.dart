@@ -6,6 +6,10 @@ class ImageManager {
 
   /*   Icons        */
   static const String drawer_icon = "assets/images/drawer_icon.png";
+  static const String aye_icon = "assets/images/eye.png";
+  static const String message_icon = "assets/images/messagesss.png";
+  static const String view_tickits = "assets/images/view_tickit.png";
+  static const String Qr_View = "assets/images/qr_pro.png";
   /* BottomBar Items Icons */
   static const String bottom_one = "assets/images/home_bar_one.png";
   static const String bottom_two = "assets/images/transection_bar_two.png";

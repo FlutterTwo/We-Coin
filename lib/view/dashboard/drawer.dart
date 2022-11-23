@@ -5,17 +5,20 @@ import 'package:we_coin/view/auth/sign_up.dart';
 import 'package:we_coin/view/dashboard/navigation_pages/profile/profile_page.dart';
 import 'package:we_coin/view/dashboard/navigation_pages/transfer/trasfer_page.dart';
 import 'package:we_coin/view/dashboard/navigation_pages/withdraw/withdraw_page.dart';
+import 'package:we_coin/view/dashboard/settings/settings.dart';
 
 import '../../utils/color_manager.dart';
 import '../auth/login.dart';
 import 'navbar.dart';
 import 'navigation_pages/deposit/deposit.dart';
 
+import 'navigation_pages/dispute/dispute.dart';
 import 'navigation_pages/home_page/home_page.dart';
 import 'navigation_pages/notification/notification.dart';
 import 'navigation_pages/recived_money/recived_money.dart';
 import 'navigation_pages/send_money/send_money.dart';
 import 'navigation_pages/tickets/tickets.dart';
+import 'navigation_pages/wallats/wallat.dart';
 
 class DrawerItem {
   String? title;
@@ -68,9 +71,23 @@ class Dashboard extends StatefulWidget {
           width: 20,
         )),
     new DrawerItem(
+        "Diposit",
+        Icon(
+          Icons.error_outline_outlined,
+          color: ColorsManager.COLOR_BLACK,
+          size: 20,
+        )),
+    new DrawerItem(
         "Dispute",
         Icon(
           Icons.error_outline_outlined,
+          color: ColorsManager.COLOR_BLACK,
+          size: 20,
+        )),
+    new DrawerItem(
+        "Setting",
+        Icon(
+          Icons.settings,
           color: ColorsManager.COLOR_BLACK,
           size: 20,
         )),
@@ -83,7 +100,22 @@ class Dashboard extends StatefulWidget {
 }
 
 class DashboardState extends State<Dashboard> {
-  int _selectedDrawerIndex = 0;
+  int _selectedIndex = 0;
+  static const List<Widget> _widgetOptions = <Widget>[
+    HomePageScreen(),
+    TransferNavigationPage(),
+    SendMoneyPageScreen(),
+    RecivedMoneyPageScreen(),
+    WallatPageScreen(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  int _selectedDrawerIndex = 1;
 
   _getDrawerItemWidget(int pos) {
     switch (pos) {
@@ -101,6 +133,10 @@ class DashboardState extends State<Dashboard> {
         return new TicketsPageScreen();
       case 6:
         return new DepositPageScreen();
+      case 7:
+        return new DisputedPageScreen();
+      case 8:
+        return new SettingScreen();
 
       default:
         return new Text("Error");
@@ -117,14 +153,14 @@ class DashboardState extends State<Dashboard> {
     var drawerOptions = <Widget>[];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
-      drawerOptions.add(new ListTile(
+      drawerOptions.add(ListTile(
         visualDensity: VisualDensity(horizontal: 0, vertical: -4),
         dense: true,
         minLeadingWidth: 20,
         leading: d.icon ?? null,
-        title: new Text(d.title!),
+        title: new Text(d.title!) ?? Divider(),
         selected: i == _selectedDrawerIndex,
-        onTap: () => _onSelectItem(i),
+        onTap: () => _onSelectItem(i) && _onSelectItem(i),
       ));
     }
     int activeIndex = 0;
@@ -137,18 +173,17 @@ class DashboardState extends State<Dashboard> {
     final GlobalKey<ScaffoldState> _scaffoldKey =
         new GlobalKey<ScaffoldState>();
     return Scaffold(
-      drawer: new Drawer(
-        child: new Column(
-          children: <Widget>[
-            new UserAccountsDrawerHeader(
-                accountName: new Text("John Doe"), accountEmail: null),
-            new Column(children: drawerOptions)
-          ],
+        drawer: new Drawer(
+          child: new Column(
+            children: <Widget>[
+              new UserAccountsDrawerHeader(
+                  accountName: new Text("John Doe"), accountEmail: null),
+              new Column(children: drawerOptions)
+            ],
+          ),
         ),
-      ),
 
-      // body: pages[activeIndex],
-      body: _getDrawerItemWidget(_selectedDrawerIndex),
-    );
+        // body: pages[activeIndex],
+        body: _getDrawerItemWidget(_selectedDrawerIndex));
   }
 }

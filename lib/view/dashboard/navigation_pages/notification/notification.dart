@@ -4,8 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:we_coin/utils/image_manager.dart';
 
 import '../../../../utils/color_manager.dart';
+import '../../drawer.dart';
 
 class NotificationPageScreen extends StatefulWidget {
+  static const String routeName = '/eventPage';
   const NotificationPageScreen({Key? key}) : super(key: key);
 
   @override

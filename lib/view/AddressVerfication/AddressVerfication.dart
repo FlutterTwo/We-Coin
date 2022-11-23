@@ -14,6 +14,7 @@ import '../../common_widget/my_custom_textfield.dart';
 import '../../utils/image_manager.dart';
 
 import '../dashboard/drawer.dart';
+import '../dashboard/navbar.dart';
 import '../dashboard/navigation_pages/home_page/home_page.dart';
 
 class AddressVerficationScreen extends StatelessWidget {
@@ -103,7 +104,7 @@ class AddressVerficationScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               MyCustomButton(
-                onPressedbtn: () => Get.to(Dashboard()),
+                onPressedbtn: () => Get.to(MyNavigationBar()),
                 text: "Submit",
                 mergin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 40.h),
               ),

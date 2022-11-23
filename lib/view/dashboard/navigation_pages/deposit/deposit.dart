@@ -111,17 +111,50 @@ class _DepositPageScreenState extends State<DepositPageScreen> {
   _onAlertButtonPressed(context) {
     Alert(
       context: context,
-      type: AlertType.error,
-      title: "RFLUTTER ALERT",
-      desc: "Flutter is more awesome with RFlutter Alert.",
+      type: AlertType.success,
+      title: "Payment Deposit Successfully",
+      style: AlertStyle(
+        descStyle: TextStyle(fontSize: 12.sp),
+        overlayColor: Colors.transparent,
+        buttonAreaPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      ),
+      desc:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
       buttons: [
         DialogButton(
+          color: ColorsManager.YELLOWBUTTON_COLOR,
           child: Text(
-            "Button",
+            "View Wallet",
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          onPressed: () => _onAlertErrorButtonPressed(context),
+          width: 180,
+        )
+      ],
+    ).show();
+  }
+
+  _onAlertErrorButtonPressed(context) {
+    Alert(
+      context: context,
+      type: AlertType.error,
+      title: "Payment Exchanege Failed                            ",
+      style: AlertStyle(
+        descStyle: TextStyle(fontSize: 12.sp),
+        overlayColor: Colors.transparent,
+        buttonAreaPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+      ),
+      desc:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      buttons: [
+        DialogButton(
+          border: Border.all(color: ColorsManager.APP_MAIN_COLOR),
+          child: Text(
+            "Try Again",
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),
           onPressed: () => Navigator.pop(context),
-          width: 120,
+          width: 180,
         )
       ],
     ).show();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:we_coin/view/dashboard/navigation_pages/recived_money/qr_code/recieved_btc.dart';
 
 import '../../../../utils/color_manager.dart';
 import '../../../../utils/image_manager.dart';
@@ -27,6 +28,12 @@ class _RecivedMoneyPageScreenState extends State<RecivedMoneyPageScreen> {
     ImageManager.qr_1,
     ImageManager.qr_1,
     ImageManager.qr_1,
+  ];
+  List<Widget> pages = [
+    RecievedBtcScreen(),
+    RecievedBtcScreen(),
+    RecievedBtcScreen(),
+    RecievedBtcScreen(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -93,7 +100,12 @@ class _RecivedMoneyPageScreenState extends State<RecivedMoneyPageScreen> {
                 children: List.generate(
                   list2.length,
                   (index) => InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => pages[index]));
+                      },
                       child: Card(
                         elevation: 10,
                         shape: RoundedRectangleBorder(
