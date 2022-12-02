@@ -10,6 +10,7 @@ import 'package:getwidget/types/gf_checkbox_type.dart';
 import '../../../../utils/color_manager.dart';
 import '../../drawer.dart';
 import '../profile/forgot_password.dart';
+import 'open_dispute.dart';
 
 class DisputedPageScreen extends StatefulWidget {
   static const String routeName = '/notificationPage';
@@ -25,6 +26,12 @@ class _DisputedPageScreenState extends State<DisputedPageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: ColorsManager.WHITE_COLOR,
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => OpenDisputeScreen()));
+          }),
       body: Column(
         children: [
           Container(
@@ -61,106 +68,106 @@ class _DisputedPageScreenState extends State<DisputedPageScreen> {
                             )
                           ])))),
           Expanded(
-            child: Container(
-                child: new ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: 10,
-                    itemBuilder: (BuildContext ctxt, int index) {
-                      return Container(
-                          margin: new EdgeInsets.fromLTRB(10, 20, 10, 0),
-                          width: 25.0,
-                          height: MediaQuery.of(context).size.height * 0.21,
-                          child: Card(
-                            elevation: 7,
-                            clipBehavior: Clip.antiAlias,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0)),
-                            color: Colors.white,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  color: Colors.amber,
-                                  width: 5,
-                                ),
-                                SizedBox(
-                                  width: 10.0,
-                                ),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      print('testing');
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 12, bottom: 12),
-                                      child: Column(
+            child: new ListView.builder(
+                shrinkWrap: true,
+                itemCount: 10,
+                itemBuilder: (BuildContext ctxt, int index) {
+                  return Container(
+                      margin: new EdgeInsets.fromLTRB(10, 0, 10, 10),
+                      width: 25.0,
+                      height: MediaQuery.of(context).size.height * 0.21,
+                      child: Card(
+                        elevation: 7,
+                        clipBehavior: Clip.antiAlias,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
+                        color: Colors.white,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Container(
+                              color: isChecked == false
+                                  ? ColorsManager.YELLOWBUTTON_COLOR
+                                  : ColorsManager.COLOR_GREEN,
+                              width: 5,
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  print('testing');
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 12, bottom: 12),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      new Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          new Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              new Text(
-                                                'ID: 54545454',
+                                            MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          new Text(
+                                            'ID: 54545454',
+                                          ),
+                                          Column(
+                                            children: [
+                                              GFCheckbox(
+                                                activeBgColor: Colors.green,
+                                                size: GFSize.SMALL,
+                                                type: GFCheckboxType.circle,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    isChecked = value;
+                                                  });
+                                                },
+                                                value: isChecked,
+                                                inactiveIcon: null,
                                               ),
-                                              Column(
-                                                children: [
-                                                  GFCheckbox(
-                                                    activeBgColor: Colors.green,
-                                                    size: GFSize.SMALL,
-                                                    type: GFCheckboxType.circle,
-                                                    onChanged: (value) {
-                                                      setState(() {
-                                                        isChecked = value;
-                                                      });
-                                                    },
-                                                    value: isChecked,
-                                                    inactiveIcon: null,
-                                                  ),
-                                                  Text("Open")
-                                                ],
-                                              ),
+                                              isChecked == false
+                                                  ? Text("Open")
+                                                  : Text("Close")
                                             ],
                                           ),
-                                          Text(
-                                            "Transaction Type",
-                                            style: TextStyle(
-                                                fontSize: 16.sp,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          Container(
-                                            height: 50,
-                                            padding: EdgeInsets.only(top: 5),
-                                            child: Text(
-                                              "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-                                              style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  color:
-                                                      ColorsManager.COLOR_GRAY,
-                                                  fontWeight: FontWeight.w400),
-                                            ),
-                                          ),
-                                          Text(
-                                            "15 : 30 | 22 Oct, 2022",
-                                            style: TextStyle(
-                                                fontSize: 12.sp,
-                                                color: ColorsManager
-                                                    .APP_MAIN_COLOR,
-                                                fontWeight: FontWeight.w400),
-                                          )
                                         ],
                                       ),
-                                    ),
+                                      Text(
+                                        "Transaction Type",
+                                        style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      Container(
+                                        height: 50,
+                                        padding: EdgeInsets.only(top: 5),
+                                        child: Text(
+                                          "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+                                          style: TextStyle(
+                                              fontSize: 12.sp,
+                                              color: ColorsManager.COLOR_GRAY,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                      Text(
+                                        "15 : 30 | 22 Oct, 2022",
+                                        style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: ColorsManager.APP_MAIN_COLOR,
+                                            fontWeight: FontWeight.w400),
+                                      )
+                                    ],
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
-                          ));
-                    })),
+                          ],
+                        ),
+                      ));
+                }),
           ),
         ],
       ),

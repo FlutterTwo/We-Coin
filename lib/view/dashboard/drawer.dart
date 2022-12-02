@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:quickalert/quickalert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:we_coin/splash_screen.dart';
 import 'package:we_coin/utils/image_manager.dart';
 import 'package:we_coin/view/auth/forgot.dart';
 import 'package:we_coin/view/auth/sign_up.dart';
@@ -8,7 +15,9 @@ import 'package:we_coin/view/dashboard/navigation_pages/withdraw/withdraw_page.d
 import 'package:we_coin/view/dashboard/settings/settings.dart';
 
 import '../../utils/color_manager.dart';
+import '../about_us/about_us.dart';
 import '../auth/login.dart';
+import '../privacy/privacy.dart';
 import 'navbar.dart';
 import 'navigation_pages/deposit/deposit.dart';
 
@@ -49,7 +58,7 @@ class Dashboard extends StatefulWidget {
           color: ColorsManager.COLOR_BLACK,
           size: 20,
         )),
-    new DrawerItem(
+    /*new DrawerItem(
         "Send Money",
         Image.asset(
           ImageManager.drawer_four,
@@ -62,7 +71,7 @@ class Dashboard extends StatefulWidget {
           ImageManager.drawer_two,
           height: 20,
           width: 20,
-        )),
+        )),*/
     new DrawerItem(
         "Tikets",
         Image.asset(
@@ -79,18 +88,33 @@ class Dashboard extends StatefulWidget {
         )),
     new DrawerItem(
         "Dispute",
-        Icon(
-          Icons.error_outline_outlined,
+        Image.asset(
+          ImageManager.bottom_four,
           color: ColorsManager.COLOR_BLACK,
-          size: 20,
+          height: 20,
+          width: 20,
         )),
-    new DrawerItem(
+    /*new DrawerItem(
         "Setting",
         Icon(
           Icons.settings,
           color: ColorsManager.COLOR_BLACK,
           size: 20,
         )),
+    new DrawerItem(
+        "Privacy",
+        Icon(
+          Icons.privacy_tip,
+          color: ColorsManager.COLOR_BLACK,
+          size: 20,
+        )),
+    new DrawerItem(
+        "About Us",
+        Icon(
+          Icons.add_circle_outline,
+          color: ColorsManager.COLOR_BLACK,
+          size: 20,
+        )),*/
   ];
 
   @override
@@ -100,22 +124,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class DashboardState extends State<Dashboard> {
-  int _selectedIndex = 0;
-  static const List<Widget> _widgetOptions = <Widget>[
-    HomePageScreen(),
-    TransferNavigationPage(),
-    SendMoneyPageScreen(),
-    RecivedMoneyPageScreen(),
-    WallatPageScreen(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  int _selectedDrawerIndex = 1;
+  int _selectedDrawerIndex = 0;
 
   _getDrawerItemWidget(int pos) {
     switch (pos) {
@@ -125,18 +134,23 @@ class DashboardState extends State<Dashboard> {
         return new ProfilePageScreen();
       case 2:
         return new NotificationPageScreen();
-      case 3:
+      /*case 3:
         return new SendMoneyPageScreen();
       case 4:
-        return new RecivedMoneyPageScreen();
-      case 5:
+        return new RecivedMoneyPageScreen();*/
+      case 3:
         return new TicketsPageScreen();
-      case 6:
+      case 4:
         return new DepositPageScreen();
-      case 7:
+      case 5:
         return new DisputedPageScreen();
-      case 8:
+        break;
+      /*case 6:
         return new SettingScreen();
+      case 7:
+        return new PrivacyScreen();
+      case 8:
+        return new AboutUsScreen();*/
 
       default:
         return new Text("Error");
@@ -153,21 +167,19 @@ class DashboardState extends State<Dashboard> {
     var drawerOptions = <Widget>[];
     for (var i = 0; i < widget.drawerItems.length; i++) {
       var d = widget.drawerItems[i];
+
       drawerOptions.add(ListTile(
         visualDensity: VisualDensity(horizontal: 0, vertical: -4),
         dense: true,
         minLeadingWidth: 20,
         leading: d.icon ?? null,
-        title: new Text(d.title!) ?? Divider(),
+        title: new Text(
+          d.title!,
+          style: TextStyle(fontSize: 16.sp),
+        ),
         selected: i == _selectedDrawerIndex,
-        onTap: () => _onSelectItem(i) && _onSelectItem(i),
+        onTap: () => _onSelectItem(i),
       ));
-    }
-    int activeIndex = 0;
-    void changeActivePage(int index) {
-      setState(() {
-        activeIndex = index;
-      });
     }
 
     final GlobalKey<ScaffoldState> _scaffoldKey =
@@ -176,14 +188,130 @@ class DashboardState extends State<Dashboard> {
         drawer: new Drawer(
           child: new Column(
             children: <Widget>[
-              new UserAccountsDrawerHeader(
-                  accountName: new Text("John Doe"), accountEmail: null),
-              new Column(children: drawerOptions)
+              Container(
+                height: 230,
+                width: double.infinity,
+                color: ColorsManager.APP_MAIN_COLOR,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 50),
+                    SizedBox(
+                      height: 50,
+                      child: IconButton(
+                        icon: Icon(Icons.arrow_back_ios,
+                            color: ColorsManager.WHITE_COLOR),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      child: SvgPicture.asset(ImageManager.app_name),
+                    ),
+                  ],
+                ),
+              ),
+              new Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(children: drawerOptions),
+                    SizedBox(height: 20),
+                    Divider(height: 10),
+                    SizedBox(height: 10),
+                    ListTile(
+                      dense: true,
+                      onTap: () async {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SettingScreen()));
+                      },
+                      minLeadingWidth: 20,
+                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                      leading: Text("Setting",
+                          style: TextStyle(
+                              fontSize: 16.sp,
+                              color: ColorsManager.DRAWER_COLOR_GRAY)),
+                    ),
+                    SizedBox(height: 10),
+                    ListTile(
+                      dense: true,
+                      onTap: () async {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PrivacyScreen()));
+                      },
+                      minLeadingWidth: 20,
+                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                      leading: Text("Privacy",
+                          style: TextStyle(
+                              fontSize: 16.sp,
+                              color: ColorsManager.DRAWER_COLOR_GRAY)),
+                    ),
+                    SizedBox(height: 10),
+                    ListTile(
+                      dense: true,
+                      onTap: () async {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => AboutUsScreen()));
+                      },
+                      minLeadingWidth: 20,
+                      visualDensity: VisualDensity(horizontal: 4, vertical: -4),
+                      leading: Text("About Us",
+                          style: TextStyle(
+                              fontSize: 16.sp,
+                              color: ColorsManager.DRAWER_COLOR_GRAY)),
+                    ),
+                    SizedBox(height: 10),
+                    ListTile(
+                      dense: true,
+                      onTap: () async {
+                        showAlertDialog(context);
+                      },
+                      minLeadingWidth: 20,
+                      visualDensity: VisualDensity(horizontal: 0, vertical: -4),
+                      leading: Text("Logout",
+                          style: TextStyle(
+                              fontSize: 16.sp,
+                              color: ColorsManager.DRAWER_COLOR_GRAY)),
+                    ),
+                  ])
             ],
           ),
         ),
 
         // body: pages[activeIndex],
         body: _getDrawerItemWidget(_selectedDrawerIndex));
+  }
+
+  showAlertDialog(BuildContext context) {
+    QuickAlert.show(
+        context: context,
+        type: QuickAlertType.warning,
+        cancelBtnText: "Cancel",
+        title: "Are You Sure",
+        text: "Are you sure to delete this",
+        confirmBtnText: "Confirm",
+        backgroundColor: Colors.transparent,
+        barrierColor: Colors.transparent,
+        showCancelBtn: true,
+        onCancelBtnTap: () {
+          Navigator.pop(context);
+        },
+        confirmBtnColor: ColorsManager.YELLOWBUTTON_COLOR,
+        onConfirmBtnTap: () async {
+          SharedPreferences preferences = await SharedPreferences.getInstance();
+          await preferences.remove('token');
+          await preferences.clear();
+          print(preferences.getString('token'));
+          print("===> Remove ${preferences.remove('token')}");
+          Get.to(SplashScreen());
+        });
   }
 }

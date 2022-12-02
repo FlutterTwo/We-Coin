@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:we_coin/common_widget/my_custom_button.dart';
+import 'package:we_coin/view/dashboard/navigation_pages/send_money/send_money_2.dart';
 
 import '../../../../utils/color_manager.dart';
 import '../../../../utils/image_manager.dart';
@@ -21,37 +22,13 @@ class SendMoneyPageScreen extends StatelessWidget {
         children: [
           Container(
             color: ColorsManager.APP_MAIN_COLOR,
-            height: MediaQuery.of(context).size.height * 0.25,
+            height: MediaQuery.of(context).size.height * 0.13,
             alignment: Alignment.center,
             width: double.infinity,
             padding: EdgeInsets.symmetric(horizontal: 12.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                AppBar(
-                    backgroundColor: Colors.transparent,
-                    automaticallyImplyLeading: false,
-                    elevation: 0,
-                    backwardsCompatibility: false,
-                    foregroundColor: ColorsManager.WHITE_COLOR,
-                    centerTitle: true,
-                    leadingWidth: 30,
-                    leading: InkWell(
-                        onTap: () => Scaffold.of(context).openDrawer(),
-                        child: Image.asset(
-                          ImageManager.drawer_icon,
-                          color: ColorsManager.WHITE_COLOR,
-                        )),
-                    title: Text("Send Money"),
-                    actions: [
-                      InkWell(
-                        onTap: () => Get.to(ProfilePageScreen()),
-                        child: CircleAvatar(
-                          child: Image.asset(ImageManager.user_pro),
-                        ),
-                      )
-                    ]),
-                SizedBox(height: 20.h),
                 Text(
                   "\$75021311",
                   style: TextStyle(
@@ -89,7 +66,9 @@ class SendMoneyPageScreen extends StatelessWidget {
             ],
           ),
           MyCustomButton(
-            onPressedbtn: () {},
+            onPressedbtn: () {
+              Get.to(SendMoney_2Screen());
+            },
             text: "Continue",
           )
         ],

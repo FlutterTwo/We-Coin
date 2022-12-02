@@ -7,6 +7,7 @@ class ColorsManager {
   static const WHITE_COLOR = Color(0xFFFFFFFF);
   static const COLOR_BLACK = Color(0xFF000000);
   static const COLOR_GRAY = Color(0xFFCCCCCC);
+  static const DRAWER_COLOR_GRAY = Color(0xFFA5A1A1);
   static const COLOR_CONTAINER = Color(0xFFDBE8FF);
   static const TEXT_COLOR = Color(0xFF7A7A7A);
   static const DASHBOARD_FIRST_COLOR = Color(0xFF345D9D);

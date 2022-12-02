@@ -29,6 +29,11 @@ class ImageManager {
   static const String qr_1 = "assets/images/qr_1.png";
   static const String transaction_view = "assets/images/transaction_view.png";
 
+  /////  currencey pic
+  static const String currency_one = "assets/images/curency_one.png";
+  static const String currency_two = "assets/images/curency_two.png";
+  static const String currency_three = "assets/images/curency_three.png";
+  static const String upload_pic = "assets/images/upload.png";
   /////
 
   /*   svg Pic        */

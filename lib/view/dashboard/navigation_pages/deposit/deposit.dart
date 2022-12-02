@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
+
 import 'package:we_coin/common_widget/my_custom_button.dart';
 import 'package:we_coin/common_widget/my_custom_textfield.dart';
 import 'package:we_coin/utils/color_manager.dart';
@@ -15,6 +17,32 @@ class DepositPageScreen extends StatefulWidget {
 }
 
 class _DepositPageScreenState extends State<DepositPageScreen> {
+  bool visibilityTag = false;
+  bool visibilityObs = false;
+
+  void _changed(bool visibility, String field) {
+    setState(() {
+      if (field == "tag") {
+        visibilityTag = visibility;
+      }
+      if (field == "obs") {
+        visibilityObs = visibility;
+      }
+    });
+  }
+
+  List list = ['name', 'kdklg'];
+  String dropdownvalue = 'Item 1';
+
+  // List of items in our dropdown menu
+  var items = [
+    'Item 1',
+    'Item 2',
+    'Item 3',
+    'Item 4',
+    'Item 5',
+  ];
+  bool isChecked = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,13 +58,31 @@ class _DepositPageScreenState extends State<DepositPageScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(
+                AppBar(
+                  title: Text(
+                    "Deposit",
+                    style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600,
+                        color: ColorsManager.WHITE_COLOR),
+                  ),
+                  leading: IconButton(
+                    icon: Icon(Icons.arrow_back_ios),
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                  ),
+                  centerTitle: true,
+                  elevation: 0,
+                  backgroundColor: Colors.transparent,
+                ),
+                /*Text(
                   "Deposit",
                   style: TextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w600,
                       color: ColorsManager.WHITE_COLOR),
-                ),
+                ),*/
                 SizedBox(height: 20.h),
                 Text(
                   "\$75021311",
@@ -88,9 +134,98 @@ class _DepositPageScreenState extends State<DepositPageScreen> {
                   ),
                   SizedBox(height: 20.h),
                   SizedBox(height: 30, child: Text("You will give")),
-                  MyCustomTextField(
-                    hint: "\$750.00",
+                  Container(
+                    height: 50,
+                    // width: MediaQuery.of(context).size.width * 0.70,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF0F0F0),
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: DropdownButtonHideUnderline(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 12.0, right: 0.0),
+                        child: DropdownButton(
+                          isExpanded: true,
+                          icon: IconButton(
+                            icon: const Icon(Icons.expand_more),
+                            onPressed: () {
+                              _changed(false, "obs");
+                            },
+                          ),
+                          hint: Text(
+                              "Select Payment"), // Not necessary for Option 1
+                          value: dropdownvalue,
+                          onChanged: (newValue) {
+                            setState(() {
+                              visibilityObs ? null : _changed(true, "obs");
+                              // Provider.of<TenantScheduleProvider>(context,listen: false).onchange("Tid", newValue);
+                            });
+                          },
+                          items: items.map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: Text(items),
+                            );
+                          }).toList(),
+                        ),
+                      ),
+                    ),
                   ),
+                  SizedBox(height: 20.h),
+                  visibilityObs
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: 30, child: Text("Name on card")),
+                            MyCustomTextField(
+                              hint: "Modassir Khan",
+                            ),
+                            SizedBox(height: 20.h),
+                            SizedBox(height: 30, child: Text("Card number")),
+                            MyCustomTextField(
+                              hint: "xxxx xxxx xxxx xxxx",
+                            ),
+                            SizedBox(height: 20.h),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                          height: 30,
+                                          child: Text("Expire date")),
+                                      MyCustomTextField(
+                                        hint: "MM/YY",
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(width: 10.h),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height: 30, child: Text("CVC")),
+                                      MyCustomTextField(
+                                        hint: "1234",
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 20.h),
+                            SizedBox(height: 30, child: Text("Postal code")),
+                            MyCustomTextField(
+                              hint: "2134",
+                            ),
+                          ],
+                        )
+                      : Container(),
                   SizedBox(height: 40.h),
                   MyCustomButton(
                     mergin: EdgeInsets.zero,
@@ -109,7 +244,12 @@ class _DepositPageScreenState extends State<DepositPageScreen> {
   }
 
   _onAlertButtonPressed(context) {
-    Alert(
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      text: 'Transaction Completed Successfully!',
+    );
+    /* Alert(
       context: context,
       type: AlertType.success,
       title: "Payment Deposit Successfully",
@@ -131,11 +271,16 @@ class _DepositPageScreenState extends State<DepositPageScreen> {
           width: 180,
         )
       ],
-    ).show();
+    ).show();*/
   }
 
   _onAlertErrorButtonPressed(context) {
-    Alert(
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      text: 'Transaction Completed Successfully!',
+    );
+/*    Alert(
       context: context,
       type: AlertType.error,
       title: "Payment Exchanege Failed                            ",
@@ -157,6 +302,6 @@ class _DepositPageScreenState extends State<DepositPageScreen> {
           width: 180,
         )
       ],
-    ).show();
+    ).show();*/
   }
 }

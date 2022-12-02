@@ -14,7 +14,8 @@ class MyCustomButton extends StatelessWidget {
       this.decoration,
       this.mergin,
       this.height,
-      this.width})
+      this.width,
+      this.shape})
       : super(key: key);
   final String? text;
   final Function()? onPressedbtn;
@@ -25,6 +26,7 @@ class MyCustomButton extends StatelessWidget {
   final Decoration? decoration;
   final double? height;
   final double? width;
+  final ShapeBorder? shape;
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +41,10 @@ class MyCustomButton extends StatelessWidget {
         color: colorss ?? ColorsManager.YELLOWBUTTON_COLOR,
         /*Theme.of(context).primaryColor,*/
         textColor: text_color ?? ColorsManager.WHITE_COLOR,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.r),
-        ),
+        shape: shape ??
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.r),
+            ),
       ),
     );
   }

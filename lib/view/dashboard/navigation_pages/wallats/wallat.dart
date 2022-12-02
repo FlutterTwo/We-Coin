@@ -37,9 +37,9 @@ class _WallatPageScreenState extends State<WallatPageScreen> {
   }
 
   List<String> _text2 = [
-    'Bitcoin',
-    'Litecoin',
     'Wecoin',
+    'Litecoin',
+    'Bitcoin',
   ];
   List<String> _text3 = [
     'Send',
@@ -47,9 +47,9 @@ class _WallatPageScreenState extends State<WallatPageScreen> {
     'Exchange',
   ];
   List<String> list2 = [
-    ImageManager.bottom_three,
-    ImageManager.notification_bill,
-    ImageManager.bottom_five
+    ImageManager.currency_one,
+    ImageManager.currency_two,
+    ImageManager.currency_three
   ];
 
   @override
@@ -65,43 +65,15 @@ class _WallatPageScreenState extends State<WallatPageScreen> {
                 Column(
                   children: <Widget>[
                     Container(
-                        height: MediaQuery.of(context).size.height * 0.30,
+                        height: MediaQuery.of(context).size.height * 0.20,
                         color: ColorsManager.APP_MAIN_COLOR,
                         alignment: Alignment.topCenter,
                         child: Padding(
                             padding: EdgeInsets.only(
-                                left: 12.w, right: 12.w, top: 30.h),
+                                left: 12.w, right: 12.w, top: 0.h),
                             child: Column(
                               children: [
-                                Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      InkWell(
-                                          onTap: () =>
-                                              Scaffold.of(context).openDrawer(),
-                                          child: Image.asset(
-                                            ImageManager.drawer_icon,
-                                            height: 20,
-                                            color: ColorsManager.WHITE_COLOR,
-                                          )),
-                                      Text(
-                                        'Wallet',
-                                        style: TextStyle(
-                                            fontSize: 20.sp,
-                                            fontWeight: FontWeight.w600,
-                                            color: ColorsManager.WHITE_COLOR),
-                                      ),
-                                      InkWell(
-                                        onTap: () =>
-                                            Get.to(ProfilePageScreen()),
-                                        child: CircleAvatar(
-                                          child: Image.asset(
-                                              ImageManager.user_pro),
-                                        ),
-                                      )
-                                    ]),
-                                SizedBox(height: 20.h),
+                                SizedBox(height: 10.h),
                                 Text(
                                   "BTC 3.5451515151",
                                   style: TextStyle(
@@ -127,7 +99,7 @@ class _WallatPageScreenState extends State<WallatPageScreen> {
                   left: 0,
                   right: 0,
                   top: MediaQuery.of(context).size.height *
-                      0.20, // (background container size) - (circle height / 2)
+                      0.10, // (background container size) - (circle height / 2)
                   child: Container(
                     height: MediaQuery.of(context).size.height * 0.25,
                     width: double.infinity,
@@ -175,8 +147,6 @@ class _WallatPageScreenState extends State<WallatPageScreen> {
                               .withOpacity(1.0),
                       child: Image.asset(
                         list2[index],
-                        width: 25,
-                        height: 25,
                       ),
                     ),
                     title: Row(

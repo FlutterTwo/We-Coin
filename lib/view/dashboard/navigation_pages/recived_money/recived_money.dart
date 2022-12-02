@@ -16,12 +16,13 @@ class RecivedMoneyPageScreen extends StatefulWidget {
 }
 
 class _RecivedMoneyPageScreenState extends State<RecivedMoneyPageScreen> {
-  List<String> _text2 = ['Bitcoin', 'Wecoin', 'Litecoin', 'Bitcoin'];
+  List<String> _text2 = ['Wecoin', 'Litecoin', 'Bitcoin', 'Bitcoin'];
+  List<String> _text3 = ['750.00 BTC', '710.00 WC', '760.00 LTC', '790.00 ETC'];
   List<String> list2 = [
-    ImageManager.notification_bill,
-    ImageManager.user_pro,
-    ImageManager.notification_bill,
-    ImageManager.notification_bill,
+    ImageManager.currency_one,
+    ImageManager.currency_two,
+    ImageManager.currency_three,
+    ImageManager.currency_three,
   ];
   List<String> qr_list = [
     ImageManager.qr_1,
@@ -42,37 +43,13 @@ class _RecivedMoneyPageScreenState extends State<RecivedMoneyPageScreen> {
         children: [
           Container(
             color: ColorsManager.APP_MAIN_COLOR,
-            height: MediaQuery.of(context).size.height * 0.25,
+            height: MediaQuery.of(context).size.height * 0.13,
             alignment: Alignment.center,
             width: double.infinity,
             padding: EdgeInsets.symmetric(horizontal: 12.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                AppBar(
-                    backgroundColor: Colors.transparent,
-                    automaticallyImplyLeading: false,
-                    elevation: 0,
-                    backwardsCompatibility: false,
-                    foregroundColor: ColorsManager.WHITE_COLOR,
-                    centerTitle: true,
-                    leadingWidth: 30,
-                    leading: InkWell(
-                        onTap: () => Scaffold.of(context).openDrawer(),
-                        child: Image.asset(
-                          ImageManager.drawer_icon,
-                          color: ColorsManager.WHITE_COLOR,
-                        )),
-                    title: Text("Recived Money"),
-                    actions: [
-                      InkWell(
-                        onTap: () => Get.to(ProfilePageScreen()),
-                        child: CircleAvatar(
-                          child: Image.asset(ImageManager.user_pro),
-                        ),
-                      )
-                    ]),
-                SizedBox(height: 20.h),
                 Text(
                   "\$75021311",
                   style: TextStyle(
@@ -133,7 +110,7 @@ class _RecivedMoneyPageScreenState extends State<RecivedMoneyPageScreen> {
                                     fontWeight: FontWeight.w600),
                               ),
                               Text(
-                                _text2[index],
+                                _text3[index],
                                 textDirection: TextDirection.rtl,
                                 softWrap: true,
                                 style: TextStyle(

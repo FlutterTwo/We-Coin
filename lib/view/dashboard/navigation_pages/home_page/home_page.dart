@@ -10,8 +10,10 @@ import 'package:we_coin/utils/image_manager.dart';
 import 'package:we_coin/view/dashboard/drawer.dart';
 import 'package:we_coin/view/dashboard/navigation_pages/profile/profile_page.dart';
 
-import '../../../../model/graphs.dart';
+import '../../../../data/model/collection_modl.dart';
+import '../../../../data/repositry/collection.dart';
 import '../../navbar.dart';
+import 'package:dio/dio.dart';
 
 class HomePageScreen extends StatefulWidget {
   static const String routeName = '/homePage';
@@ -24,6 +26,7 @@ class HomePageScreen extends StatefulWidget {
 class _HomePageScreenState extends State<HomePageScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
+  var _client = Dio();
   List<LineChartModel> data = [
     LineChartModel(amount: 100, date: DateTime(2020, 1, 1)),
     LineChartModel(amount: 200, date: DateTime(2020, 1, 2)),
@@ -58,11 +61,24 @@ class _HomePageScreenState extends State<HomePageScreen> {
   }
 
   ///bottom Grid
-  List<String> _text2 = ['تريد النجاح', 'اشعر'];
-  List<String> list2 = [
-    ImageManager.notification_bill,
-    ImageManager.notification_bill
+  List<String> _text2 = [
+    'Wecoin',
+    'Litecoin',
+    'Bitcoin',
   ];
+  List<String> list2 = [
+    ImageManager.currency_one,
+    ImageManager.currency_two,
+    ImageManager.currency_three
+  ];
+
+  bool check = true;
+
+  getDataAgain() async {
+    setState(() {
+      check = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,385 +92,356 @@ class _HomePageScreenState extends State<HomePageScreen> {
       ..color = ColorsManager.WHITE_COLOR;
 
     return Scaffold(
-        appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            automaticallyImplyLeading: false,
-            elevation: 0,
-            backwardsCompatibility: false,
-            foregroundColor: ColorsManager.COLOR_BLACK,
-            centerTitle: true,
-            leading: InkWell(
-                onTap: () => Scaffold.of(context).openDrawer(),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.asset(ImageManager.drawer_icon),
-                )),
-            title: Text("Dashboard"),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                  onTap: () => Get.to(ProfilePageScreen()),
-                  child: CircleAvatar(
-                    child: Image.asset(ImageManager.user_pro),
-                  ),
-                ),
-              )
-            ]),
         body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
+      padding: EdgeInsets.only(left: 8.0, right: 8.0, top: 20),
+      child: Column(
+        children: [
+          Row(
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 126,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          color: ColorsManager.YELLOWBUTTON_COLOR),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Bitcoin",
-                                style:
-                                    TextStyle(color: ColorsManager.WHITE_COLOR),
-                              ),
-                              CircleAvatar(
-                                radius: 10,
-                                backgroundColor: ColorsManager.WHITE_COLOR,
-                                child: Icon(
-                                  Icons.currency_bitcoin,
-                                  size: 16,
-                                ) /*Image.asset(ImageManager.app_name)*/,
-                              )
-                            ],
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "4,351 ETH",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  color: ColorsManager.WHITE_COLOR,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16.sp),
-                            ),
-                          ),
-                          LineChart(
-                            width: 100,
-                            height: 30,
-                            data: data,
-                            linePaint: linePaint,
-                            showPointer: true,
-                            showCircles: false,
-                            linePointerDecoration: BoxDecoration(
-                              color: ColorsManager.WHITE_COLOR,
-                            ),
-                            pointerDecoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: ColorsManager.WHITE_COLOR,
-                            ),
-                            insideCirclePaint: insideCirclePaint,
-                            onValuePointer: (LineChartModelCallback value) {
-                              print('${value.chart} ${value.percentage}');
-                            },
-                            onDropPointer: () {
-                              print('onDropPointer');
-                            },
-                          ),
-                          Spacer(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "\S125,0",
-                                style:
-                                    TextStyle(color: ColorsManager.WHITE_COLOR),
-                              ),
-                              Text(
-                                "+51\%",
-                                style:
-                                    TextStyle(color: ColorsManager.WHITE_COLOR),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10.w),
-                  Expanded(
-                    child: Container(
-                      height: 126,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          color: ColorsManager.COLOR_BLACK),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Bitcoin",
-                                style:
-                                    TextStyle(color: ColorsManager.WHITE_COLOR),
-                              ),
-                              CircleAvatar(
-                                radius: 10,
-                                backgroundColor: ColorsManager.WHITE_COLOR,
-                                child: Icon(
-                                  Icons.currency_bitcoin,
-                                  size: 16,
-                                ) /*Image.asset(ImageManager.app_name)*/,
-                              )
-                            ],
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "4,351 ETH",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  color: ColorsManager.WHITE_COLOR,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16.sp),
-                            ),
-                          ),
-                          LineChart(
-                            width: 100,
-                            height: 30,
-                            data: data,
-                            linePaint: linePaint,
-                            showPointer: true,
-                            showCircles: false,
-                            linePointerDecoration: BoxDecoration(
-                              color: ColorsManager.WHITE_COLOR,
-                            ),
-                            pointerDecoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: ColorsManager.WHITE_COLOR,
-                            ),
-                            insideCirclePaint: insideCirclePaint,
-                            onValuePointer: (LineChartModelCallback value) {
-                              print('${value.chart} ${value.percentage}');
-                            },
-                            onDropPointer: () {
-                              print('onDropPointer');
-                            },
-                          ),
-                          Spacer(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "\S125,0",
-                                style:
-                                    TextStyle(color: ColorsManager.WHITE_COLOR),
-                              ),
-                              Text(
-                                "+51\%",
-                                style:
-                                    TextStyle(color: ColorsManager.WHITE_COLOR),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10.w),
-                  Expanded(
-                    child: Container(
-                      height: 126,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.r),
-                          color: ColorsManager.DASHBOARD_FIRST_COLOR),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Bitcoin",
-                                style:
-                                    TextStyle(color: ColorsManager.WHITE_COLOR),
-                              ),
-                              CircleAvatar(
-                                radius: 10,
-                                backgroundColor: ColorsManager.WHITE_COLOR,
-                                child: Icon(
-                                  Icons.currency_bitcoin,
-                                  size: 16,
-                                ) /*Image.asset(ImageManager.app_name)*/,
-                              )
-                            ],
-                          ),
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "4,351 ETH",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                  color: ColorsManager.WHITE_COLOR,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16.sp),
-                            ),
-                          ),
-                          LineChart(
-                            width: 100,
-                            height: 30,
-                            data: data,
-                            linePaint: linePaint,
-                            showPointer: true,
-                            showCircles: false,
-                            linePointerDecoration: BoxDecoration(
-                              color: ColorsManager.WHITE_COLOR,
-                            ),
-                            pointerDecoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: ColorsManager.WHITE_COLOR,
-                            ),
-                            insideCirclePaint: insideCirclePaint,
-                            onValuePointer: (LineChartModelCallback value) {
-                              print('${value.chart} ${value.percentage}');
-                            },
-                            onDropPointer: () {
-                              print('onDropPointer');
-                            },
-                          ),
-                          Spacer(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "\S125,0",
-                                style:
-                                    TextStyle(color: ColorsManager.WHITE_COLOR),
-                              ),
-                              Text(
-                                "+51\%",
-                                style:
-                                    TextStyle(color: ColorsManager.WHITE_COLOR),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              /////// new design graphs
-              /*charts.Barchart(series, animate: true)*/
-              //// new column start
-              SizedBox(height: 20.h),
-              Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.r)),
+              Expanded(
                 child: Container(
-                  padding: EdgeInsets.symmetric(vertical: 10),
-                  height: 200,
-                  child: SfCartesianChart(
-                      plotAreaBorderWidth: 0,
-                      borderWidth: 0,
-                      primaryYAxis: CategoryAxis(isVisible: false),
-                      enableSideBySideSeriesPlacement: false,
-                      enableAxisAnimation: false,
-                      primaryXAxis: CategoryAxis(
-                        axisLine: AxisLine(width: 0),
-                        majorGridLines: MajorGridLines(width: 0),
+                  height: 126,
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.r),
+                      color: ColorsManager.YELLOWBUTTON_COLOR),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Bitcoin",
+                            style: TextStyle(color: ColorsManager.WHITE_COLOR),
+                          ),
+                          CircleAvatar(
+                            radius: 10,
+                            backgroundColor: ColorsManager.WHITE_COLOR,
+                            child: Image.asset(
+                              ImageManager.currency_three,
+                              height: 16,
+                            ),
+                          )
+                        ],
                       ),
-                      tooltipBehavior: _tooltip,
-                      series: <ChartSeries<_ChartData, String>>[
-                        ColumnSeries<_ChartData, String>(
-                            dataSource: data1,
-                            xValueMapper: (_ChartData data, _) => data.x,
-                            yValueMapper: (_ChartData data, _) => data.y,
-                            color: Color.fromRGBO(8, 142, 255, 1))
-                      ]),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "4,351 ETH",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              color: ColorsManager.WHITE_COLOR,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16.sp),
+                        ),
+                      ),
+                      LineChart(
+                        width: 100,
+                        height: 30,
+                        data: data,
+                        linePaint: linePaint,
+                        showPointer: true,
+                        showCircles: false,
+                        linePointerDecoration: BoxDecoration(
+                          color: ColorsManager.WHITE_COLOR,
+                        ),
+                        pointerDecoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: ColorsManager.WHITE_COLOR,
+                        ),
+                        insideCirclePaint: insideCirclePaint,
+                        onValuePointer: (LineChartModelCallback value) {
+                          print('${value.chart} ${value.percentage}');
+                        },
+                        onDropPointer: () {
+                          print('onDropPointer');
+                        },
+                      ),
+                      Spacer(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "\S125,0",
+                            style: TextStyle(color: ColorsManager.WHITE_COLOR),
+                          ),
+                          Text(
+                            "+51\%",
+                            style: TextStyle(color: ColorsManager.WHITE_COLOR),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
-              SizedBox(height: 20.h),
-              Container(
-                padding: EdgeInsets.all(12),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "Recent Transactions",
+              SizedBox(width: 10.w),
+              Expanded(
+                child: Container(
+                  height: 126,
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.r),
+                      color: ColorsManager.COLOR_BLACK),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Wecoin",
+                            style: TextStyle(color: ColorsManager.WHITE_COLOR),
+                          ),
+                          CircleAvatar(
+                            radius: 10,
+                            backgroundColor: ColorsManager.WHITE_COLOR,
+                            child: Image.asset(
+                              ImageManager.currency_one,
+                              height: 23,
+                              width: 23,
+                            ),
+                          )
+                        ],
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "4,351 ETH",
+                          textAlign: TextAlign.start,
                           style: TextStyle(
-                            color: ColorsManager.COLOR_GRAY,
-                            fontSize: 14.sp,
-                          ),
+                              color: ColorsManager.WHITE_COLOR,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16.sp),
                         ),
-                        Text("See All", style: TextStyle()),
-                      ],
-                    ),
-                    ListTile(
-                      leading: CircleAvatar(
-                        child: Image.asset(ImageManager.user_pro),
                       ),
-                      title: Row(
+                      LineChart(
+                        width: 100,
+                        height: 30,
+                        data: data,
+                        linePaint: linePaint,
+                        showPointer: true,
+                        showCircles: false,
+                        linePointerDecoration: BoxDecoration(
+                          color: ColorsManager.WHITE_COLOR,
+                        ),
+                        pointerDecoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: ColorsManager.WHITE_COLOR,
+                        ),
+                        insideCirclePaint: insideCirclePaint,
+                        onValuePointer: (LineChartModelCallback value) {
+                          print('${value.chart} ${value.percentage}');
+                        },
+                        onDropPointer: () {
+                          print('onDropPointer');
+                        },
+                      ),
+                      Spacer(),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("Bitcoin"),
-                          Text("Type",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: ColorsManager.COLOR_GRAY)),
-                          SizedBox(height: 10.h)
-                        ],
-                      ),
-                      subtitle: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text("12/02/22",
-                              style: TextStyle(
-                                fontSize: 12.sp,
-                                color: ColorsManager.COLOR_GRAY,
-                              )),
-                          Text("Send",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: ColorsManager.COLOR_BLACK)),
-                          SizedBox(height: 10.h)
-                        ],
-                      ),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "\$750.00",
-                            style: TextStyle(fontWeight: FontWeight.w600),
+                            "\S125,0",
+                            style: TextStyle(color: ColorsManager.WHITE_COLOR),
                           ),
                           Text(
-                            "Completed",
-                            style: TextStyle(color: ColorsManager.COLOR_GREEN),
+                            "+51\%",
+                            style: TextStyle(color: ColorsManager.WHITE_COLOR),
                           ),
                         ],
-                      ),
-                    ),
-                  ],
+                      )
+                    ],
+                  ),
                 ),
-              )
+              ),
+              SizedBox(width: 10.w),
+              Expanded(
+                child: Container(
+                  height: 126,
+                  padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.r),
+                      color: ColorsManager.DASHBOARD_FIRST_COLOR),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Litecoin",
+                            style: TextStyle(color: ColorsManager.WHITE_COLOR),
+                          ),
+                          CircleAvatar(
+                            radius: 10,
+                            backgroundColor: ColorsManager.WHITE_COLOR,
+                            child: Image.asset(
+                              ImageManager.currency_two,
+                              height: 16,
+                            ),
+                          )
+                        ],
+                      ),
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "4,351 ETH",
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              color: ColorsManager.WHITE_COLOR,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16.sp),
+                        ),
+                      ),
+                      LineChart(
+                        width: 100,
+                        height: 30,
+                        data: data,
+                        linePaint: linePaint,
+                        showPointer: true,
+                        showCircles: false,
+                        linePointerDecoration: BoxDecoration(
+                          color: ColorsManager.WHITE_COLOR,
+                        ),
+                        pointerDecoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: ColorsManager.WHITE_COLOR,
+                        ),
+                        insideCirclePaint: insideCirclePaint,
+                        onValuePointer: (LineChartModelCallback value) {
+                          print('${value.chart} ${value.percentage}');
+                        },
+                        onDropPointer: () {
+                          print('onDropPointer');
+                        },
+                      ),
+                      Spacer(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "\S125,0",
+                            style: TextStyle(color: ColorsManager.WHITE_COLOR),
+                          ),
+                          Text(
+                            "+51\%",
+                            style: TextStyle(color: ColorsManager.WHITE_COLOR),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
-        ));
+          /////// new design graphs
+          /*charts.Barchart(series, animate: true)*/
+          //// new column start
+          SizedBox(height: 20.h),
+          Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.r)),
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              height: 200,
+              child: SfCartesianChart(
+                  plotAreaBorderWidth: 0,
+                  borderWidth: 0,
+                  primaryYAxis: CategoryAxis(isVisible: false),
+                  enableSideBySideSeriesPlacement: false,
+                  enableAxisAnimation: false,
+                  primaryXAxis: CategoryAxis(
+                    axisLine: AxisLine(width: 0),
+                    majorGridLines: MajorGridLines(width: 0),
+                  ),
+                  tooltipBehavior: _tooltip,
+                  series: <ChartSeries<_ChartData, String>>[
+                    ColumnSeries<_ChartData, String>(
+                        dataSource: data1,
+                        xValueMapper: (_ChartData data, _) => data.x,
+                        yValueMapper: (_ChartData data, _) => data.y,
+                        color: Color.fromRGBO(8, 142, 255, 1))
+                  ]),
+            ),
+          ),
+          SizedBox(height: 20.h),
+          Container(
+            padding: EdgeInsets.all(12),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Recent Transactions",
+                      style: TextStyle(
+                        color: ColorsManager.COLOR_GRAY,
+                        fontSize: 14.sp,
+                      ),
+                    ),
+                    Text("See All", style: TextStyle()),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView(
+              shrinkWrap: false,
+              children: List.generate(
+                list2.length,
+                (index) => ListTile(
+                  leading: CircleAvatar(
+                    child: Image.asset(list2[index]),
+                  ),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(_text2[index]),
+                      Text("Type",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: ColorsManager.COLOR_GRAY)),
+                      SizedBox(height: 10.h)
+                    ],
+                  ),
+                  subtitle: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text("12/02/22",
+                          style: TextStyle(
+                            fontSize: 12.sp,
+                            color: ColorsManager.COLOR_GRAY,
+                          )),
+                      Text("Send",
+                          style: TextStyle(
+                              fontSize: 16, color: ColorsManager.COLOR_BLACK)),
+                      SizedBox(height: 10.h)
+                    ],
+                  ),
+                  trailing: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "\$750.00",
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        "Completed",
+                        style: TextStyle(color: ColorsManager.COLOR_GREEN),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    ));
   }
 }
 

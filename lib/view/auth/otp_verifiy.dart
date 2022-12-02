@@ -1,10 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:we_coin/common_widget/my_custom_button.dart';
 import 'package:we_coin/utils/color_manager.dart';
 import 'package:we_coin/view/auth/reset_password.dart';
@@ -26,7 +28,7 @@ class OtpVerificationScreen extends StatelessWidget {
             Column(
               children: [
                 Container(
-                  height: 249,
+                  height: MediaQuery.of(context).size.height * 0.28,
                   width: double.infinity,
                   alignment: Alignment.center,
                   decoration: new BoxDecoration(
@@ -55,40 +57,31 @@ class OtpVerificationScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 55.h),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: MyCustomTextField(
-                              textAlign: TextAlign.center,
-                              contentPadding: EdgeInsets.all(5),
-                              hint: "8",
-                            ),
-                          ),
-                          SizedBox(width: 20.w),
-                          Expanded(
-                            child: MyCustomTextField(
-                              textAlign: TextAlign.center,
-                              contentPadding: EdgeInsets.all(5),
-                              hint: "8",
-                            ),
-                          ),
-                          SizedBox(width: 20.w),
-                          Expanded(
-                            child: MyCustomTextField(
-                              textAlign: TextAlign.center,
-                              contentPadding: EdgeInsets.all(5),
-                              hint: "8",
-                            ),
-                          ),
-                          SizedBox(width: 20.w),
-                          Expanded(
-                            child: MyCustomTextField(
-                              textAlign: TextAlign.center,
-                              contentPadding: EdgeInsets.all(5),
-                              hint: "8",
-                            ),
-                          ),
-                        ],
+                      OtpTextField(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        numberOfFields: 4,
+                        fieldWidth: 70,
+                        fillColor: Color(0xFFF0F0F0),
+                        filled: true,
+                        borderColor: ColorsManager.APP_MAIN_COLOR,
+                        //set to true to show as box or false to show as dash
+                        showFieldAsBox: true,
+                        //runs when a code is typed in
+                        onCodeChanged: (String code) {
+                          //handle validation or checks here
+                        },
+                        //runs when every textfield is filled
+                        onSubmit: (String verificationCode) {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text("Verification Code"),
+                                  content:
+                                      Text('Code entered is $verificationCode'),
+                                );
+                              });
+                        }, // end onSubmit
                       ),
                       SizedBox(height: 70.h),
                     ],
@@ -103,7 +96,13 @@ class OtpVerificationScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 MyCustomButton(
-                  onPressedbtn: () => Get.to(ResetPasswordScreen()),
+                  onPressedbtn: () async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    String? token = prefs.getString('token');
+                    print("===> Identity Verification  ${token}");
+                    Get.to(ResetPasswordScreen());
+                  },
                   text: "Verify",
                   mergin:
                       EdgeInsets.symmetric(horizontal: 20.w, vertical: 40.h),

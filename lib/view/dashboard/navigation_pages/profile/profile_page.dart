@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:provider/provider.dart';
 import 'package:we_coin/utils/color_manager.dart';
-
+import 'package:http/http.dart' as http;
+import '../../../../data/model/view_profile_model.dart';
+import '../../../../data/repositry/view_profile_get.dart';
 import '../../../../utils/image_manager.dart';
 import '../../drawer.dart';
 import '../../navbar.dart';
@@ -18,9 +23,18 @@ class ProfilePageScreen extends StatefulWidget {
 
 class _ProfilePageScreenState extends State<ProfilePageScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    final viewProfile =
+        Provider.of<ViewProfile_Provider>(context, listen: false);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final viewProfile =
+        Provider.of<ViewProfile_Provider>(context, listen: false);
     return Scaffold(
-      drawer: navigationDrawer(),
       body: Column(
         children: [
           Expanded(
@@ -60,6 +74,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                         ),
                                         InkWell(
                                           onTap: () {
+                                            viewProfile.getUser();
                                             Get.to(EditProfilePageScreen());
                                           },
                                           child: CircleAvatar(
@@ -68,160 +83,195 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                       .WHITE_COLOR)),
                                         )
                                       ])))),
-                      SizedBox(height: 50),
+                      SizedBox(height: 25),
                       Expanded(
-                        child: ListView(
-                          primary: false,
-                          children: [
-                            Container(
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "Mudassir Khan",
-                                    style: TextStyle(
-                                        fontSize: 20.sp,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  Text("Mudassirhabib9@gmail.com"),
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: 10.h),
-                            Container(
-                              height: 45,
-                              width: double.infinity,
-                              padding: EdgeInsets.symmetric(horizontal: 12.w),
-                              alignment: Alignment.centerLeft,
-                              color: ColorsManager.COLOR_GRAY,
-                              child: Text("Personal Details"),
-                            ),
-                            Container(
-                                alignment: Alignment.centerLeft,
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 12.w, vertical: 10),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                        child: FutureBuilder<ViewProfileModel?>(
+                          future: viewProfile.getUser(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              ViewProfileModel? userInfo = snapshot.data;
+                              if (userInfo != null) {
+                                return ListView(
+                                  primary: false,
                                   children: [
-                                    SizedBox(
-                                        height: 18.h,
-                                        child: Text(
-                                          "Default Wallet",
-                                          style: TextStyle(
-                                              fontSize: 12.sp,
-                                              color: ColorsManager.COLOR_GRAY),
-                                        )),
-                                    SizedBox(
-                                        height: 30.h,
-                                        child: Text("454a5a4s5a4da5d")),
-                                    SizedBox(
-                                        height: 18.h,
-                                        child: Text(
-                                          "Address 1",
-                                          style: TextStyle(
-                                              fontSize: 12.sp,
-                                              color: ColorsManager.COLOR_GRAY),
-                                        )),
-                                    SizedBox(
-                                      height: 30.h,
-                                      child: Text(
-                                          "303 Talbot Ave\nCambridge, Maryland(MD), 21613"),
+                                    Container(
+                                      child: Column(
+                                        children: [
+                                          Text(
+                                            userInfo.data!.fullName.toString(),
+                                            style: TextStyle(
+                                                fontSize: 20.sp,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          Text(
+                                            userInfo.data!.email.toString(),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    SizedBox(height: 18.h),
-                                    SizedBox(
-                                        height: 18.h,
-                                        child: Text(
-                                          "City",
-                                          style: TextStyle(
-                                              fontSize: 12.sp,
-                                              color: ColorsManager.COLOR_GRAY),
+                                    SizedBox(height: 10.h),
+                                    Container(
+                                      height: 45,
+                                      width: double.infinity,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 12.w),
+                                      alignment: Alignment.centerLeft,
+                                      color: ColorsManager.COLOR_GRAY,
+                                      child: Text("Personal Details"),
+                                    ),
+                                    Container(
+                                        alignment: Alignment.centerLeft,
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 12.w, vertical: 10),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SizedBox(
+                                                height: 18.h,
+                                                child: Text(
+                                                  "Default Wallet",
+                                                  style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      color: ColorsManager
+                                                          .COLOR_GRAY),
+                                                )),
+                                            SizedBox(
+                                                height: 30.h,
+                                                child: Text("454a5a4s5a4da5d")),
+                                            SizedBox(
+                                                height: 18.h,
+                                                child: Text(
+                                                  "Address 1",
+                                                  style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      color: ColorsManager
+                                                          .COLOR_GRAY),
+                                                )),
+                                            SizedBox(
+                                              height: 30.h,
+                                              child: Text(userInfo.data!.phone
+                                                          .toString() ==
+                                                      null
+                                                  ? "303 Talbot Ave\nCambridge, Maryland(MD), 21613"
+                                                  : "303 Talbot Ave\nCambridge, Maryland(MD), 21613"),
+                                            ),
+                                            SizedBox(height: 18.h),
+                                            /*SizedBox(
+                                                height: 18.h,
+                                                child: Text(
+                                                  "City",
+                                                  style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      color: ColorsManager
+                                                          .COLOR_GRAY),
+                                                )),
+                                            SizedBox(
+                                                height: 30.h,
+                                                child: Text("New York")),*/
+                                            SizedBox(
+                                                height: 18.h,
+                                                child: Text(
+                                                  "Country",
+                                                  style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      color: ColorsManager
+                                                          .COLOR_GRAY),
+                                                )),
+                                            SizedBox(
+                                                height: 30.h,
+                                                child: Text(
+                                                  userInfo.data!.country
+                                                      .toString(),
+                                                )),
+                                            SizedBox(
+                                                height: 18.h,
+                                                child: Text(
+                                                  "Phone No#",
+                                                  style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      color: ColorsManager
+                                                          .COLOR_GRAY),
+                                                )),
+                                            SizedBox(
+                                                height: 30.h,
+                                                child: Text(userInfo.data!.phone
+                                                    .toString())),
+                                            SizedBox(
+                                                height: 18.h,
+                                                child: Text(
+                                                  "Time Zone",
+                                                  style: TextStyle(
+                                                      fontSize: 12.sp,
+                                                      color: ColorsManager
+                                                          .COLOR_GRAY),
+                                                )),
+                                            SizedBox(
+                                                height: 30.h,
+                                                child: Text("GMT")),
+                                          ],
                                         )),
-                                    SizedBox(
-                                        height: 30.h, child: Text("New York")),
-                                    SizedBox(
-                                        height: 18.h,
-                                        child: Text(
-                                          "State",
-                                          style: TextStyle(
-                                              fontSize: 12.sp,
-                                              color: ColorsManager.COLOR_GRAY),
-                                        )),
-                                    SizedBox(
-                                        height: 30.h,
-                                        child: Text("Washignton")),
-                                    SizedBox(
-                                        height: 18.h,
-                                        child: Text(
-                                          "Country",
-                                          style: TextStyle(
-                                              fontSize: 12.sp,
-                                              color: ColorsManager.COLOR_GRAY),
-                                        )),
-                                    SizedBox(
-                                        height: 30.h,
-                                        child: Text("United States")),
-                                    SizedBox(
-                                        height: 18.h,
-                                        child: Text(
-                                          "Time Zone",
-                                          style: TextStyle(
-                                              fontSize: 12.sp,
-                                              color: ColorsManager.COLOR_GRAY),
-                                        )),
-                                    SizedBox(height: 30.h, child: Text("GMT")),
+                                    Container(
+                                      height: 45,
+                                      width: double.infinity,
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 12.w),
+                                      alignment: Alignment.centerLeft,
+                                      color: ColorsManager.COLOR_GRAY,
+                                      child: Text("Personal Details"),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            height: 80,
+                                            width: 138,
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.r),
+                                                color: ColorsManager
+                                                    .COLOR_CONTAINER),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(Icons.badge),
+                                                Text("Identity Card"),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(width: 10),
+                                          Container(
+                                            height: 80,
+                                            width: 138,
+                                            alignment: Alignment.center,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.r),
+                                                color: ColorsManager
+                                                    .COLOR_CONTAINER),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Icon(Icons.badge),
+                                                Text("Identity Card"),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
                                   ],
-                                )),
-                            Container(
-                              height: 45,
-                              width: double.infinity,
-                              padding: EdgeInsets.symmetric(horizontal: 12.w),
-                              alignment: Alignment.centerLeft,
-                              color: ColorsManager.COLOR_GRAY,
-                              child: Text("Personal Details"),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    height: 80,
-                                    width: 138,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10.r),
-                                        color: ColorsManager.COLOR_CONTAINER),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.badge),
-                                        Text("Identity Card"),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(width: 10),
-                                  Container(
-                                    height: 80,
-                                    width: 138,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10.r),
-                                        color: ColorsManager.COLOR_CONTAINER),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.badge),
-                                        Text("Identity Card"),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            )
-                          ],
+                                );
+                              }
+                            }
+                            return Center(child: CircularProgressIndicator());
+                          },
                         ),
                       )
                     ],

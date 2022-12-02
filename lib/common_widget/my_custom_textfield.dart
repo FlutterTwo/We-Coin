@@ -9,7 +9,7 @@ class MyCustomTextField extends StatelessWidget {
   final double? hight;
   final int? maxLines;
   // final Function? onChange;
-  // final Function validator;
+  final FormFieldValidator<String>? validator;
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   // final Function onTap;
@@ -17,7 +17,7 @@ class MyCustomTextField extends StatelessWidget {
   final TextAlign? textAlign;
   final EdgeInsetsGeometry? contentPadding;
   // final Color borderColor;
-  // final bool obscureText;
+  final bool? obscureText;
   // final InputDecoration decoration;
   // final Function(String) validator;
 
@@ -36,6 +36,8 @@ class MyCustomTextField extends StatelessWidget {
     this.maxLines,
     this.textAlign,
     this.contentPadding,
+    this.validator,
+    this.obscureText,
     // required this.borderColor,
     // required this.obscureText,
     /*required this.decoration*/
@@ -51,16 +53,18 @@ class MyCustomTextField extends StatelessWidget {
         maxLines: maxLines ?? 1,
         // controller: callback,
         // autovalidate: true,
-        // obscureText: obscureText,
+        // obscureText: obscureText!,
         // validator: validator(),
         // inputFormatters: inputFormatters,
         keyboardType: kry,
         textAlign: textAlign ?? TextAlign.start,
+        validator: validator,
 
         decoration: InputDecoration(
           contentPadding: contentPadding ?? EdgeInsets.fromLTRB(12, 10, 0, 10),
           hintText: hint,
           filled: true,
+          floatingLabelBehavior: FloatingLabelBehavior.never,
           fillColor: const Color(0xFFF0F0F0),
           prefixIcon: prefixIcon,
           suffixIcon: suffixIcon,

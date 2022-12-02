@@ -4,10 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:we_coin/common_widget/my_custom_button.dart';
 import 'package:we_coin/utils/color_manager.dart';
 import 'package:we_coin/utils/image_manager.dart';
 import 'package:we_coin/view/auth/login.dart';
+import 'package:we_coin/view/dashboard/drawer.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -53,8 +55,11 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             Spacer(),
             MyCustomButton(
-              onPressedbtn: () {
-                Get.to(LoginScreen());
+              onPressedbtn: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                print('Auth ID: ${prefs.getInt('id')}');
+                Get.to(
+                    prefs.getInt('id') == null ? LoginScreen() : Dashboard());
               },
               text: "Get Started",
             ),

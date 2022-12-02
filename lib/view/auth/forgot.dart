@@ -5,19 +5,28 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:provider/provider.dart';
 import 'package:we_coin/common_widget/my_custom_button.dart';
 import 'package:we_coin/utils/color_manager.dart';
 import 'package:we_coin/view/auth/sign_up.dart';
 
 import '../../common_widget/my_custom_textfield.dart';
+import '../../data/repositry/auth_repo.dart';
 import '../../utils/image_manager.dart';
 import 'otp_verifiy.dart';
 
-class ForgotScreen extends StatelessWidget {
+class ForgotScreen extends StatefulWidget {
   const ForgotScreen({Key? key}) : super(key: key);
 
   @override
+  State<ForgotScreen> createState() => _ForgotScreenState();
+}
+
+class _ForgotScreenState extends State<ForgotScreen> {
+  TextEditingController forgotPassController = TextEditingController();
+  @override
   Widget build(BuildContext context) {
+    final _forgot_password = Provider.of<Auth_Provider>(context, listen: false);
     final isKeyboard = MediaQuery.of(context).viewInsets.bottom != 0;
     return Scaffold(
       body: SingleChildScrollView(
@@ -27,7 +36,7 @@ class ForgotScreen extends StatelessWidget {
             Column(
               children: [
                 Container(
-                  height: 249,
+                  height: MediaQuery.of(context).size.height * 0.28,
                   width: double.infinity,
                   alignment: Alignment.center,
                   decoration: new BoxDecoration(
@@ -59,6 +68,7 @@ class ForgotScreen extends StatelessWidget {
                       MyCustomTextField(
                         kry: TextInputType.phone,
                         prefixIcon: Icon(Icons.phone),
+                        controller: forgotPassController,
                         hint: "Phone Number",
                       ),
                       SizedBox(height: 70.h),
@@ -72,7 +82,9 @@ class ForgotScreen extends StatelessWidget {
 
             MyCustomButton(
               onPressedbtn: () {
-                Get.to(OtpVerificationScreen());
+                _forgot_password.forgot_password(
+                    context, forgotPassController.text);
+                // Get.to(OtpVerificationScreen());
               },
               text: "Confirm",
               mergin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 40.h),

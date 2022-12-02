@@ -39,7 +39,7 @@ class ViewTickitsScreen extends StatelessWidget {
                                       IconButton(
                                         onPressed: () => Get.back(),
                                         icon: Icon(
-                                          Icons.arrow_back_ios_new_rounded,
+                                          Icons.arrow_back_ios,
                                           color: ColorsManager.WHITE_COLOR,
                                         ),
                                       ),

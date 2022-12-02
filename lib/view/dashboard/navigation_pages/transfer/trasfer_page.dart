@@ -33,9 +33,9 @@ class _TransferNavigationPageState extends State<TransferNavigationPage> {
 
   ///bottom Grid
   List<String> _text2 = [
-    'Bitcoin',
-    'Litecoin',
     'Wecoin',
+    'Litecoin',
+    'Bitcoin',
   ];
   List<String> _text3 = [
     'Send',
@@ -43,43 +43,21 @@ class _TransferNavigationPageState extends State<TransferNavigationPage> {
     'Exchange',
   ];
   List<String> list2 = [
-    ImageManager.drawer_icon,
-    ImageManager.notification_bill,
-    ImageManager.notification_bill
+    ImageManager.currency_one,
+    ImageManager.currency_two,
+    ImageManager.currency_three
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          automaticallyImplyLeading: false,
-          elevation: 0,
-          backwardsCompatibility: false,
-          foregroundColor: ColorsManager.COLOR_BLACK,
-          centerTitle: true,
-          leading: InkWell(
-              onTap: () => Scaffold.of(context).openDrawer(),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.asset(ImageManager.drawer_icon),
-              )),
-          title: Text("Transfer"),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CircleAvatar(
-                child: Image.asset(ImageManager.user_pro),
-              ),
-            )
-          ]),
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
           children: [
             Card(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.r)),
+                  borderRadius: BorderRadius.circular(10.r)),
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 height: 200,
@@ -87,6 +65,7 @@ class _TransferNavigationPageState extends State<TransferNavigationPage> {
                     plotAreaBorderWidth: 0,
                     borderWidth: 0,
                     enableSideBySideSeriesPlacement: false,
+                    primaryYAxis: CategoryAxis(isVisible: false),
                     enableAxisAnimation: false,
                     primaryXAxis: CategoryAxis(
                       axisLine: AxisLine(width: 0),
@@ -127,8 +106,6 @@ class _TransferNavigationPageState extends State<TransferNavigationPage> {
                             .withOpacity(1.0),
                         child: Image.asset(
                           list2[index],
-                          width: 25,
-                          height: 25,
                         ),
                       ),
                       title: Row(

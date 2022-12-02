@@ -10,7 +10,6 @@ import 'package:we_coin/utils/image_manager.dart';
 import 'package:we_coin/view/dashboard/drawer.dart';
 import 'package:we_coin/view/dashboard/navigation_pages/profile/profile_page.dart';
 
-import '../../../../model/graphs.dart';
 import '../../navbar.dart';
 
 class TransactionPageScreen extends StatefulWidget {
