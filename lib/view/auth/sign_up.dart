@@ -112,7 +112,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hint: "Password",
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Enter a valid password!';
+                          return 'Please a Enter Eamil';
+                        }
+                        if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                            .hasMatch(value)) {
+                          return 'Please a valid Email';
                         }
                         return null;
                       },

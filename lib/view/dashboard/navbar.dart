@@ -146,23 +146,43 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
           showUnselectedLabels: false,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Image.asset(ImageManager.bottom_one, height: 25),
+              icon: Image.asset(
+                  _selectedIndex == 0
+                      ? ImageManager.bottom_black_one
+                      : ImageManager.bottom_one,
+                  height: 25),
               label: _selectedIndex == 0 ? 'Home' : '',
             ),
             BottomNavigationBarItem(
-              icon: Image.asset(ImageManager.bottom_two, height: 25),
+              icon: Image.asset(
+                  _selectedIndex == 1
+                      ? ImageManager.bottom_black_two
+                      : ImageManager.bottom_two,
+                  height: 25),
               label: _selectedIndex == 1 ? 'Transaction' : '',
             ),
             BottomNavigationBarItem(
-              icon: Image.asset(ImageManager.bottom_three, height: 25),
+              icon: Image.asset(
+                  _selectedIndex == 2
+                      ? ImageManager.bottom_black_three
+                      : ImageManager.bottom_three,
+                  height: 25),
               label: _selectedIndex == 2 ? 'Send' : '',
             ),
             BottomNavigationBarItem(
-              icon: Image.asset(ImageManager.bottom_four, height: 25),
+              icon: Image.asset(
+                  _selectedIndex == 3
+                      ? ImageManager.bottom_black_four
+                      : ImageManager.bottom_four,
+                  height: 25),
               label: _selectedIndex == 3 ? 'Recived' : '',
             ),
             BottomNavigationBarItem(
-              icon: Image.asset(ImageManager.bottom_five, height: 25),
+              icon: Image.asset(
+                  _selectedIndex == 4
+                      ? ImageManager.bottom_black_five
+                      : ImageManager.bottom_five,
+                  height: 25),
               label: _selectedIndex == 4 ? 'Wallat' : '',
             ),
           ],

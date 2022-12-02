@@ -89,7 +89,7 @@ class Dashboard extends StatefulWidget {
     new DrawerItem(
         "Dispute",
         Image.asset(
-          ImageManager.bottom_four,
+          ImageManager.bottom_black_four,
           color: ColorsManager.COLOR_BLACK,
           height: 20,
           width: 20,

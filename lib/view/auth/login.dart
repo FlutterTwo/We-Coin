@@ -65,34 +65,34 @@ class _LoginScreenState extends State<LoginScreen> {
               ]),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height * 0.28,
-              width: double.infinity,
-              alignment: Alignment.center,
-              decoration: new BoxDecoration(
-                  image: new DecorationImage(
-                image: new AssetImage(ImageManager.splash_bar),
-                fit: BoxFit.fill,
-              )),
-              child: SvgPicture.asset(ImageManager.app_name),
-            ),
-            SizedBox(height: 20.h),
-            Text(
-              "Login",
-              style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
-            ),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-              child: Column(
-                children: [
-                  Form(
-                    key: _formValidKey,
-                    child: Container(
+      body: Form(
+        key: _formValidKey,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * 0.28,
+                width: double.infinity,
+                alignment: Alignment.center,
+                decoration: new BoxDecoration(
+                    image: new DecorationImage(
+                  image: new AssetImage(ImageManager.splash_bar),
+                  fit: BoxFit.fill,
+                )),
+                child: SvgPicture.asset(ImageManager.app_name),
+              ),
+              SizedBox(height: 20.h),
+              Text(
+                "Login",
+                style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                child: Column(
+                  children: [
+                    Container(
                       padding: EdgeInsets.only(top: 15, bottom: 30),
                       alignment: Alignment.center,
                       child: Text(
@@ -101,43 +101,65 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(color: ColorsManager.TEXT_COLOR),
                       ),
                     ),
-                  ),
-                  MyCustomTextField(
-                    hint: "Email",
-                    controller: emailController,
-                    prefixIcon: Icon(Icons.email),
-                  ),
-                  SizedBox(height: 20),
-                  MyPasswordTextFormField(
-                    prefixIcon: Icon(Icons.lock),
-                    kry: TextInputType.visiblePassword,
-                    controller: passwordController,
-                    hint: "Password",
-                  ),
-                  SizedBox(height: 70.h),
-                  MyCustomButton(
-                    onPressedbtn: () {
-                      _sign_in.sign_in(context, emailController.text,
-                          passwordController.text);
-                    },
-                    child: _sign_in.loading
-                        ? CircularProgressIndicator(
-                            color: Colors.black,
-                          )
-                        : Text("Login"),
-                    mergin: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-                  ),
-                  InkWell(
-                    onTap: () => Get.to(ForgotScreen()),
-                    child: Text(
-                      "Forget Password?",
-                      style: TextStyle(decoration: TextDecoration.underline),
+                    MyCustomTextField(
+                      hint: "Email",
+                      controller: emailController,
+                      prefixIcon: Icon(Icons.email),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please a Enter Eamil';
+                        }
+                        if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                            .hasMatch(value)) {
+                          return 'Please a valid Email';
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                ],
+                    SizedBox(height: 20),
+                    MyPasswordTextFormField(
+                      prefixIcon: Icon(Icons.lock),
+                      kry: TextInputType.visiblePassword,
+                      controller: passwordController,
+                      hint: "Password",
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Enter a valid phone no!';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(height: 70.h),
+                    MyCustomButton(
+                      onPressedbtn: () {
+                        if (_formValidKey.currentState!.validate()) {
+                          print("successful");
+                          _sign_in.sign_in(context, emailController.text,
+                              passwordController.text);
+                          return;
+                        } else {
+                          print("UnSuccessfull");
+                        }
+                      },
+                      child: _sign_in.loading
+                          ? CircularProgressIndicator(
+                              color: Colors.black,
+                            )
+                          : Text("Login"),
+                      mergin: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                    ),
+                    InkWell(
+                      onTap: () => Get.to(ForgotScreen()),
+                      child: Text(
+                        "Forget Password?",
+                        style: TextStyle(decoration: TextDecoration.underline),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

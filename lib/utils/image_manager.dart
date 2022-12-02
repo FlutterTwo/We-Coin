@@ -11,11 +11,18 @@ class ImageManager {
   static const String view_tickits = "assets/images/view_tickit.png";
   static const String Qr_View = "assets/images/qr_pro.png";
   /* BottomBar Items Icons */
-  static const String bottom_one = "assets/images/home_bar_one.png";
+  static const String bottom_one = "assets/images/home_black.png";
   static const String bottom_two = "assets/images/transection_bar_two.png";
   static const String bottom_three = "assets/images/sendmoney_bar_three.png";
   static const String bottom_four = "assets/images/recive_money_bar_four.png";
   static const String bottom_five = "assets/images/wallats_bar_five.png";
+
+  /// black
+  static const String bottom_black_five = "assets/images/wallat_black.png";
+  static const String bottom_black_one = "assets/images/home_bar_one.png";
+  static const String bottom_black_two = "assets/images/transaction_black.png";
+  static const String bottom_black_three = "assets/images/sendmoney_black.png";
+  static const String bottom_black_four = "assets/images/recived_black.png";
 
   ////////////////////////// drwer
   static const String drawer_one = "assets/images/profile_dash.png";
